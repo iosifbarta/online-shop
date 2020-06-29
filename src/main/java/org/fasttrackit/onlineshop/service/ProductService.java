@@ -58,15 +58,13 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product "+ id + " not found"));
     }
 
-    public Page<Product> getProduts(GetProductsRequest request, Pageable pageable){
+    public Page<Product> getProducts(GetProductsRequest request, Pageable pageable){
 
-        String partialName = request.getPartialName();
-        int minimumQuantity = request.getMinimumQuantity();
 
         if ((request.getPartialName() != null && request.getMinimumQuantity() != null)){
             return productRepository.findByNameContainingAndQuantityGreaterThanEqual(
                     request.getPartialName(), request.getMinimumQuantity(), pageable);
-        }else  if (request.getPartialName() != null){
+        }else if (request.getPartialName() != null){
             return productRepository.findByNameContaining(request.getPartialName(), pageable);
         }else {
             return productRepository.findAll(pageable);
